@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_supabase_authentication_demo/screens/auth/ProfileScreen.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
@@ -60,6 +61,19 @@ class CustomDrawer extends StatelessWidget {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.pushNamed(context, '/settings');
+              },
+            ),
+            ListTile(
+              leading: Icon(Icons.contacts),
+              title: Text('Profile'),
+              onTap: () {
+                Navigator.pop(context);
+                Navigator.push(
+                  parentContext,
+                  MaterialPageRoute(
+                    builder: (context) => ProfileScreen(title: 'Profile'),
+                  ),
+                );
               },
             ),
             Divider(),
