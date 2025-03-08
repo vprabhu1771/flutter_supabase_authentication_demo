@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../auth/EditProfileScreen.dart';
 
 import '../../widgets/CustomDrawer.dart';
 import '../HomeScreen.dart';
@@ -14,7 +15,15 @@ class ProfileScreen extends StatefulWidget {
 
 class _ProfileScreenState extends State<ProfileScreen> {
 
-  final user = supabase.auth.currentUser;
+  var user = supabase.auth.currentUser;
+
+  Future<void> refreshUserData() async {
+    await supabase.auth.refreshSession();
+    setState(() {
+      user = supabase.auth.currentUser; // Update user state
+    });
+  }
+
 
   Future<void> signOut() async {
     await supabase.auth.signOut();
@@ -56,8 +65,19 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 leading: Icon(Icons.person),
                 title: Text(user?.userMetadata?['name']), // Replace with dynamic user name
                 trailing: Icon(Icons.edit),
-                onTap: () {
+                onTap: () async  {
                   // Handle the edit profile action
+                  bool? result = await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditProfileScreen(),
+                    ),
+                  );
+
+                  if (result == true) {
+                    await refreshUserData(); // Refresh data after edit
+                  }
+
                 },
               ),
               const Divider(),
